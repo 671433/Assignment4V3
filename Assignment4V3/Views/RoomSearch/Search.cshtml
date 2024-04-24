@@ -1,0 +1,60 @@
+﻿@model IEnumerable< Assignment4V3.ModelView.RoomViewModel>
+@{
+    ViewData["Title"] = "Search";
+}
+
+
+<h2>Available Rooms</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Checkin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Checkout)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BedOption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.roomSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booked)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Checkin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Checkout)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BedOption)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.roomSize)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Booked)
+                </td>
+
+                <td>
+                 <!--  <a asp-controller="Reservation" asp-action="Create" asp-route-id="@item.Id" asp-route-userEmail="" asp-route-checkInDate="yourCheckInDate" asp-route-checkOutDate="yourCheckOutDate">New Reservation</a>
+                       -->
+                    <a asp-controller="Reservations" asp-action="Create" >New Reservation</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

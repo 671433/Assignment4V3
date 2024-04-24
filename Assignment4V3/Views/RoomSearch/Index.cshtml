@@ -1,0 +1,21 @@
+﻿@model Assignment4V3.ModelView.RoomViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<form asp-controller="RoomSearch" asp-action="Search" method="post">
+    <label for="Checkin">Check-in Date:</label>
+    <input asp-for="Checkin" type="date" />
+
+    <label for="Checkout">Check-out Date:</label>
+    <input asp-for="Checkout" type="date" />
+
+    <label for="BedOption">Number of Beds:</label>
+    <input asp-for="BedOption" type="number" />
+
+    <label for="Price">Maximum Price:</label>
+    <input asp-for="Price" type="number" />
+
+    <input type="submit" value="Search" />
+</form>
