@@ -49,7 +49,7 @@
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="Last Name: " VerticalAlignment="Center"/>
                         <TextBox x:Name="CustumersSearch" Width="150" Margin="0,0,10,0"/>
-                        <Button x:Name="CustumersSearchButton" Content="Search Custumers" Click="bookingSearchButton_Click"/>
+                        <Button x:Name="CustumersSearchButton" Content="Search Custumers" Click="CustumersSearchButton_Click"/>
                     </StackPanel>
                     <ListView Name="CustumersList" ItemsSource="{Binding}" Grid.Row="1">
                         <ListView.View>

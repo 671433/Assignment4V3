@@ -58,11 +58,49 @@ namespace FrontDeskApp
             context.Reservations.Load();
             context.AspNetUsers.Load();
 
-            MessageBox.Show("");
+            string selectedRoomNr = searchBox.Text.Trim().ToLower();
 
-            allRooms();
-            allUser();
+            if (string.IsNullOrEmpty(selectedRoomNr))
+            {
+                allRooms();
+            }
 
+                if (int.TryParse(selectedRoomNr, out int roomNumber)) 
+            {
+                var isRoomNumberExity = context.Rooms.Where(r => r.Id == roomNumber).FirstOrDefault();
+                if (isRoomNumberExity != null)
+                {
+                     var filteredList = (from room in Rooms
+                                          join res in Reservations on room.Id equals res.RoomId into roomReservations
+                                          from rR in roomReservations.DefaultIfEmpty()
+                                          join user in Users on rR?.UserId equals user.Id into userReservations
+                                          from ur in userReservations.DefaultIfEmpty()
+                                          where room.RoomNumber.ToString().Contains(selectedRoomNr)
+                                          select new
+                                          {
+                                              RoomNumber = room.RoomNumber,
+                                              RoomType = room.RoomType,
+                                              NumBeds = room.NumBeds,
+                                              Price = room.Price,
+                                              AvailableFrom = room.AvailableFrom,
+                                              AvailableTo = room.AvailableTo,
+                                              Booked = room.Booked,
+                                              CustomerFirstName = ur != null ? ur.Email : "",
+                                              CustomerLastName = ur != null ? ur.LastName : "",
+                                              CheckInDate = rR != null ? rR.CheckInDate : (DateTime?)null
+
+                                          }).ToList();
+                    roomList.ItemsSource = filteredList;
+                }
+                else
+                {
+                    MessageBox.Show("Room Not Found. All Rooms er displayed");
+
+                    allRooms();
+                }
+
+
+            }
         }
 
         private void allUser()
@@ -348,6 +386,35 @@ namespace FrontDeskApp
         private void showAllServiceButton_Click(object sender, RoutedEventArgs e)
         {
             serviceRequestsDataGrid.ItemsSource = context.Services.ToList();
+        }
+
+        private void CustumersSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            context.AspNetUsers.Load();
+            var allUsersList = context.AspNetUsers.ToList();
+            string selectedUserEmai  = CustumersSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(selectedUserEmai))
+            {
+                allUser();
+            }
+            else  
+            {
+                var isEmailexist = context.AspNetUsers.Where(u => u.Email == selectedUserEmai).FirstOrDefault();
+                if (isEmailexist != null)
+                {
+                    var filterdList = context.AspNetUsers.Where(u => u.Email == selectedUserEmai).ToList();
+                    CustumersList.ItemsSource = filterdList;    
+                }
+                else
+                {
+                    MessageBox.Show("User Email Not Found. All Users er displayed "); 
+                                      
+                    CustumersList.ItemsSource = allUsersList;
+                }
+            }
+
+      
         }
     }
 }
